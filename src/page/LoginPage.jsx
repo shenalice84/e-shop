@@ -1,28 +1,34 @@
+import { useState } from "react";
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export default function LoginPage({ account, setAccount }) {
+export default function LoginPage({ setIsAuth }) {
+  const [account, setAccount] = useState({
+    username: "",
+    password: "",
+  });
+
   const handleInputChange = (e) => {
     setAccount({
       ...account,
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${BASE_URL}/admin/signin`,
-        account
-      );
-      
+      const res = await axios.post(`${BASE_URL}/admin/signin`, account);
+      setIsAuth(true);
+      const { token, expired } = res.data;
+      document.cookie = `hexToken=${token}; expires=${new Date(expired)};`; // 存token到cookie
+      axios.defaults.headers.common["Authorization"] = token;
+      getProducts();
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
   return (
     <>
       <div className="d-flex flex-column justify-content-center align-items-center vh-100">
@@ -52,7 +58,9 @@ export default function LoginPage({ account, setAccount }) {
             />
             <label htmlFor="password">Password</label>
           </div>
-          <button type="submit" className="btn btn-primary">登入</button>
+          <button type="submit" className="btn btn-primary">
+            登入
+          </button>
         </form>
       </div>
     </>
