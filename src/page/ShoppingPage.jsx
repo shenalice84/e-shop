@@ -11,21 +11,30 @@ export default function ShoppingPage() {
   const [products, setProducts] = useState([]);
   const [tempProduct, setTempProduct] = useState([]);
   const [cart, setCart] = useState({});
+  const [isScreenLoading, setIsScreenLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getCart = async () => {
+    setIsScreenLoading(true);
     try {
       const res = await axios.get(`${BASE_URL}/api/${API_PATH}/cart`);
       setCart(res.data.data);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsScreenLoading(false);
+    }
   };
 
   useEffect(() => {
     const getProducts = async () => {
+      setIsScreenLoading(true);
       try {
         const res = await axios.get(`${BASE_URL}/api/${API_PATH}/products`);
         setProducts(res.data.products);
       } catch (error) {
         alert("取得產品失敗");
+      } finally {
+        setIsScreenLoading(false);
       }
     };
     getProducts();
@@ -55,6 +64,7 @@ export default function ShoppingPage() {
   const [qtySelect, setQtySelect] = useState(1);
 
   const addCartItem = async (product_id, qty) => {
+    setIsLoading(true);
     try {
       await axios.post(`${BASE_URL}/api/${API_PATH}/cart`, {
         data: {
@@ -66,30 +76,39 @@ export default function ShoppingPage() {
       getCart();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const removeCart = async () => {
+    setIsScreenLoading(true);
     try {
       await axios.delete(`${BASE_URL}/api/${API_PATH}/carts`);
 
       getCart();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsScreenLoading(false);
     }
   };
 
   const removeCartItem = async (cartItem_id) => {
+    setIsScreenLoading(true);
     try {
       await axios.delete(`${BASE_URL}/api/${API_PATH}/cart/${cartItem_id}`);
 
       getCart();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsScreenLoading(false);
     }
   };
 
   const updateCartItem = async (cartItem_id, product_id, qty) => {
+    setIsScreenLoading(true);
     try {
       await axios.put(`${BASE_URL}/api/${API_PATH}/cart/${cartItem_id}`, {
         data: {
@@ -101,6 +120,8 @@ export default function ShoppingPage() {
       getCart();
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsScreenLoading(true);
     }
   };
 
@@ -108,6 +129,7 @@ export default function ShoppingPage() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const onSubmit = (data) => {
@@ -122,9 +144,16 @@ export default function ShoppingPage() {
   };
 
   const checkout = async (data) => {
+    setIsScreenLoading(true);
     try {
-      axios.post(`${BASE_URL}/api/${API_PATH}/order`, data);
-    } catch (error) {}
+      await axios.post(`${BASE_URL}/api/${API_PATH}/order`, data);
+      getCart();
+      reset();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsScreenLoading(false);
+    }
   };
 
   return (
@@ -235,9 +264,11 @@ export default function ShoppingPage() {
                     addCartItem(tempProduct.id, qtySelect);
                   }}
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-primary d-flex align-items-center gap-2"
+                  disabled={isLoading}
                 >
-                  加入購物車
+                  <div>加入購物車</div>
+                  {isLoading && <ClipLoader color={"#000"} size={20} />}
                 </button>
               </div>
             </div>
@@ -447,18 +478,19 @@ export default function ShoppingPage() {
           </div>
         </form>
       </div>
-
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundColor: "rgba(255,255,255,0.3)",
-          zIndex: 999,
-        }}
-      >
-        <ClipLoader color="#36d7b7" size={50} />
-      </div>
+      {isScreenLoading && (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(255,255,255,0.3)",
+            zIndex: 999,
+          }}
+        >
+          <ClipLoader color="#36d7b7" size={50} />
+        </div>
+      )}
     </div>
   );
 }
