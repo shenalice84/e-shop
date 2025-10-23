@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { pushMessage } from "../redux/toastSlice";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -10,6 +12,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isScreenLoading, setIsScreenLoading] = useState(false);
+  const dispatch = useDispatch()
 
   const addCartItem = async (product_id, qty) => {
     setIsLoading(true);
@@ -33,6 +36,11 @@ export default function ProductsPage() {
       try {
         const res = await axios.get(`${BASE_URL}/api/${API_PATH}/products`);
         setProducts(res.data.products);
+
+        dispatch(pushMessage({
+          text: '新增產品成功',
+          status: 'success'
+        }))
       } catch (error) {
         alert("取得產品失敗");
       } finally {

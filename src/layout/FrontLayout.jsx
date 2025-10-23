@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import Toast from "../components/Toast";
 const routes = [
   { path: "/", name: "首頁" },
   { path: "/products", name: "產品列表" },
@@ -28,6 +29,7 @@ export function FrontLayout() {
         </div>
       </nav>
       <Outlet />
+      <Toast></Toast>
     </>
   );
 }
