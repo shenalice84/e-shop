@@ -1,14 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import Toast from "../components/Toast";
-const routes = [
-  { path: "/", name: "首頁" },
-  { path: "/products", name: "產品列表" },
-  { path: "/cart", name: "購物車" },
-  { path: "/admin", name: "後台" }
-];
 
-export function FrontLayout() {
+const routes = [
+  { path: "/", name: "首頁" }
+]
+
+export default function AdminLayout() {
   return (
     <>
       <nav
@@ -30,7 +27,6 @@ export function FrontLayout() {
         </div>
       </nav>
       <Outlet />
-      <Toast></Toast>
     </>
   );
 }

@@ -1,12 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export default function LoginPage({ setIsAuth }) {
+export default function LoginPage() {
   const [account, setAccount] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setAccount({
@@ -20,11 +23,11 @@ export default function LoginPage({ setIsAuth }) {
 
     try {
       const res = await axios.post(`${BASE_URL}/admin/signin`, account);
-      setIsAuth(true);
       const { token, expired } = res.data;
       document.cookie = `hexToken=${token}; expires=${new Date(expired)};`; // 存token到cookie
       axios.defaults.headers.common["Authorization"] = token;
-      getProducts();
+
+      navigate("/admin", { replace: true });
     } catch (error) {
       console.log(error);
     }

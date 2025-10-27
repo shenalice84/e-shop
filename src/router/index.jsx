@@ -5,6 +5,10 @@ import { HomePage } from "../page/HomePage";
 import ProductDetailPage from "../page/ProductDetailPage";
 import CartPage from "../page/CartPage";
 import NotFound from "../page/NotFound";
+import ProductPage from "../page/ProductPage"
+import LoginPage from "../page/LoginPage"
+import PrivateRoute from "./PrivateRoute";
+import AdminLayout from "../layout/AdminLayout";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +32,26 @@ const router = createBrowserRouter([
         element: <CartPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />
+  },
+  {
+    path: "/admin",
+    element: <PrivateRoute/>,
+    children: [
+      {
+        path: "",
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "",
+            element: <ProductPage />
+          }
+        ]
+      }
+    ]
   },
   {
     path: "*",

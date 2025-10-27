@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
-import axios from "axios";
 import { Modal } from "bootstrap";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
+import api from "../api/axios";
 
 export function DeleteProductModal({
   getProducts,
@@ -13,8 +12,8 @@ export function DeleteProductModal({
   const deleteModalRef = useRef(null);
   const deleteProduct = async () => {
     try {
-      await axios.delete(
-        `${BASE_URL}/api/${API_PATH}/admin/product/${tempProduct.id}`
+      await api.delete(
+        `/api/${API_PATH}/admin/product/${tempProduct.id}`
       );
 
       getProducts();

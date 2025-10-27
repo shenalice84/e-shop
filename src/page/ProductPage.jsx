@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 import { Pagination } from "../components/Pagination";
 import { ProductModal } from "../components/ProductModal";
 import { DeleteProductModal } from "../components/DeleteProductModal";
+import api from "../api/axios";
 
 const defaultModalState = {
   imageUrl: "",
@@ -19,7 +18,7 @@ const defaultModalState = {
   imagesUrl: [""],
 };
 
-export function ProductPage() {
+export default function ProductPage() {
   const [products, setProducts] = useState([]);
   const [tempProduct, setTempProduct] = useState(defaultModalState);
   const [modalMode, setModalMode] = useState(null);
@@ -32,8 +31,8 @@ export function ProductPage() {
 
   const getProducts = async (page = 1) => {
     try {
-      const res = await axios.get(
-        `${BASE_URL}/api/${API_PATH}/admin/products?page=${page}`
+      const res = await api.get(
+        `/api/${API_PATH}/admin/products?page=${page}`
       );
       setProducts(res.data.products);
       setPageInfo(res.data.pagination);
