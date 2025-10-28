@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { ClipLoader } from "react-spinners";
+import Loading from "../components/Loading"
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -312,7 +312,7 @@ export default function CartPage() {
             zIndex: 999,
           }}
         >
-          <ClipLoader color="#36d7b7" size={50} />
+          <Loading />
         </div>
       )}
     </div>

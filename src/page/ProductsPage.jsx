@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ClipLoader } from "react-spinners";
+import Loading from "../components/Loading";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { pushMessage } from "../redux/toastSlice";
@@ -92,7 +92,7 @@ export default function ProductsPage() {
                       disabled={isLoading}
                     >
                       <div>加到購物車</div>
-                      {isLoading && <ClipLoader color={"#000"} size={20} />}
+                      {isLoading && <Loading />}
                     </button>
                   </div>
                 </td>
@@ -112,7 +112,7 @@ export default function ProductsPage() {
             zIndex: 999,
           }}
         >
-          <ClipLoader color="#36d7b7" size={50} />
+          <Loading />
         </div>
       )}
     </>

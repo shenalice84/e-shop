@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { ClipLoader } from "react-spinners";
+import Loading from "../components/Loading";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -81,7 +81,7 @@ export default function ProductDetailPage() {
                 }}
                 type="button" className="btn btn-primary d-flex align-items-center gap-2">
                 <div>加入購物車</div>
-                {isLoading && <ClipLoader color={"#000"} size={20} />}
+                {isLoading && <Loading />}
               </button>
             </div>
           </div>
