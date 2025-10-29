@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom'
 import router from './router/index.jsx'
 import { Provider } from 'react-redux'
 
+import './assets/styles/all.scss'
 import 'bootstrap/dist/css/bootstrap.css'
 import store from './redux/store.js'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

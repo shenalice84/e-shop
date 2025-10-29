@@ -1,35 +1,14 @@
 import { Outlet } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import Toast from "../components/Toast";
-const routes = [
-  { path: "/", name: "首頁" },
-  { path: "/products", name: "產品列表" },
-  { path: "/cart", name: "購物車" },
-  { path: "/admin", name: "後台" }
-];
+import Header from "../components/common/header";
+import Footer from "../components/common/footer";
 
 export function FrontLayout() {
   return (
     <>
-      <nav
-        className="navbar bg-dark border-bottom border-body"
-        data-bs-theme="dark"
-      >
-        <div className="container">
-          <ul className="navbar-nav flex-row gap-5 fs-5">
-            {routes.map((route) => {
-              return (
-                <li className="nav-item" key={route.name}>
-                  <NavLink className="nav-link" to={route.path}>
-                    {route.name}
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </nav>
+      <Header />
       <Outlet />
+      <Footer />
       <Toast></Toast>
     </>
   );
